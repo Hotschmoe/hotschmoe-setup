@@ -21,6 +21,13 @@ Installs applications for work/engineering:
 **Usage:**
 ```powershell
 # Run as Administrator (recommended)
+# If you get an execution policy error, use one of these methods:
+
+# Method 1: Bypass execution policy for this run only (recommended)
+powershell -ExecutionPolicy Bypass -File .\windows\work-setup.ps1
+
+# Method 2: Set execution policy for current session
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\windows\work-setup.ps1
 ```
 
@@ -54,6 +61,13 @@ Installs development tools and AI coding assistants:
 **Usage:**
 ```powershell
 # Run as Administrator (recommended)
+# If you get an execution policy error, use one of these methods:
+
+# Method 1: Bypass execution policy for this run only (recommended)
+powershell -ExecutionPolicy Bypass -File .\windows\dev-setup.ps1
+
+# Method 2: Set execution policy for current session
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\windows\dev-setup.ps1
 ```
 
