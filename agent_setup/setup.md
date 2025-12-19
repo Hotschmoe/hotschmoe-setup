@@ -27,6 +27,12 @@ go install github.com/Dicklesworthstone/beads_viewer/cmd/bv@latest
 > [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";$env:USERPROFILE\go\bin", "User")
 > ```
 
+### 3. Install Additional Grep tools (TODO: add this to setup scripts)
+
+```powershell
+winget install ripgrep ast-grep
+```
+
 ---
 
 ## Complete Beads Workflow
