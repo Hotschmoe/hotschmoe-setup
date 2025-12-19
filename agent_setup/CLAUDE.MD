@@ -133,9 +133,5 @@ bv --export-graph graph.html              # Interactive HTML
 - ASCII diagrams are encouraged for visualizing flows
 - Store planning/design documents in `history/` directory
 
----
 
-## Sources
-
-- [Beads AGENTS.md](https://github.com/steveyegge/beads/blob/main/AGENTS.md)
-- [Beads Viewer AGENTS.md](https://github.com/Dicklesworthstone/beads_viewer/blob/main/AGENTS.md)
+we love you, Claude! do your best today
