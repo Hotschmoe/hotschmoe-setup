@@ -1,4 +1,5 @@
 - use beads (bd) - (will fill this in shortly)
+- use beads viewer (bv) - (will fill this in shortly)
 - use model sonnet subagents (will make file)
 - use gemini cli subagents (will make file)
 - commit working mile stones
