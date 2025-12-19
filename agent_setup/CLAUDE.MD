@@ -1,0 +1,7 @@
+- use beads (bd) - (will fill this in shortly)
+- use model sonnet subagents (will make file)
+- use gemini cli subagents (will make file)
+- commit working mile stones
+- be sure to leverage the unique strengths of [main_language] (ie zig, rust)
+- NO EMOJIS. do not use emojis or any other non-textual characters. you may use ASCII art if needed. (i do enjoy ascii diagrams to visualize flows)
+- we love you, Claude! do your best today!
