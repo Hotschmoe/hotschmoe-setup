@@ -132,7 +132,7 @@ ensure_yay
 echo ""
 
 STEP=1
-TOTAL=19
+TOTAL=20
 
 # ============================================
 # Git
@@ -295,6 +295,14 @@ echo ""
 ((STEP++))
 
 # ============================================
+# LLVM
+# ============================================
+echo -e "${CYAN}[$STEP/$TOTAL] Installing LLVM...${NC}"
+install_pkg "llvm" "llvm"
+echo ""
+((STEP++))
+
+# ============================================
 # Docker
 # ============================================
 echo -e "${CYAN}[$STEP/$TOTAL] Installing Docker...${NC}"
@@ -406,6 +414,7 @@ echo "  - Python 3"
 echo "  - Zig"
 echo "  - ZLS"
 echo "  - ARM GNU Toolchain"
+echo "  - LLVM"
 echo "  - Docker"
 echo "  - QEMU"
 echo "  - LazyGit"
@@ -439,6 +448,7 @@ echo "   python3 --version"
 echo "   zig version"
 echo "   zls --version"
 echo "   arm-none-eabi-gcc --version"
+echo "   clang --version"
 echo "   docker --version"
 echo "   qemu-system-aarch64 --version"
 echo "   lazygit --version"

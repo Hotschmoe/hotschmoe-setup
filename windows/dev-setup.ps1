@@ -21,7 +21,7 @@ Write-Host "winget found. Starting installations..." -ForegroundColor Green
 Write-Host ""
 
 $stepNum = 1
-$totalSteps = 18
+$totalSteps = 19
 
 # ============================================
 # WSL2 with Ubuntu (needed for Docker, general Linux dev)
@@ -178,6 +178,20 @@ if ($LASTEXITCODE -eq 0) {
 }
 else {
     Write-Host "ARM GNU Toolchain installation may have failed or was already installed" -ForegroundColor Yellow
+}
+Write-Host ""
+$stepNum++
+
+# ============================================
+# LLVM
+# ============================================
+Write-Host "[$stepNum/$totalSteps] Installing LLVM..." -ForegroundColor Yellow
+winget install -e --id LLVM.LLVM --accept-package-agreements --accept-source-agreements
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "LLVM installed successfully!" -ForegroundColor Green
+}
+else {
+    Write-Host "LLVM installation may have failed or was already installed" -ForegroundColor Yellow
 }
 Write-Host ""
 $stepNum++
@@ -341,6 +355,7 @@ Write-Host "  - Python 3.12" -ForegroundColor White
 Write-Host "  - Zig" -ForegroundColor White
 Write-Host "  - ZLS (Zig Language Server)" -ForegroundColor White
 Write-Host "  - ARM GNU Toolchain" -ForegroundColor White
+Write-Host "  - LLVM" -ForegroundColor White
 Write-Host "  - Docker Desktop" -ForegroundColor White
 Write-Host "  - QEMU" -ForegroundColor White
 Write-Host "  - Cursor" -ForegroundColor White
@@ -386,6 +401,7 @@ Write-Host "   python --version" -ForegroundColor Cyan
 Write-Host "   zig version" -ForegroundColor Cyan
 Write-Host "   zls --version" -ForegroundColor Cyan
 Write-Host "   arm-none-eabi-gcc --version" -ForegroundColor Cyan
+Write-Host "   clang --version" -ForegroundColor Cyan
 Write-Host "   docker --version" -ForegroundColor Cyan
 Write-Host "   qemu-system-aarch64 --version" -ForegroundColor Cyan
 Write-Host "   claude --version" -ForegroundColor Cyan

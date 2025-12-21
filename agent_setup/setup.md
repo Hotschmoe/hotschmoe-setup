@@ -33,6 +33,20 @@ go install github.com/Dicklesworthstone/beads_viewer/cmd/bv@latest
 winget install ripgrep ast-grep
 ```
 
+### 4. Install LLVM
+
+```powershell
+winget install LLVM.LLVM
+```
+
+## Installation (Linux)
+
+### Install LLVM
+
+```bash
+sudo apt-get install llvm
+```
+
 ---
 
 ## Complete Beads Workflow
