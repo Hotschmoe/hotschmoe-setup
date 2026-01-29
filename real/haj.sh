@@ -98,7 +98,7 @@ for section in $SECTIONS; do
     # Check if section exists in source
     if ! echo "$SOURCE_CONTENT" | grep -q "<!-- BEGIN:$section -->"; then
         echo -e "${YELLOW}Skipped: $section (not in source)${NC}"
-        ((skipped++))
+        ((skipped++)) || true
         continue
     fi
 
@@ -133,7 +133,7 @@ for section in $SECTIONS; do
 
     mv "$temp_file" "$TARGET"
     echo -e "${GREEN}Updated: $section${NC}"
-    ((updated++))
+    ((updated++)) || true
 done
 
 echo ""
