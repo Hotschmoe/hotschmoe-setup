@@ -7,4 +7,4 @@ and build ontop of previous work/sprints. Be exhaustive, be clear, be technical,
 always focus on small atomic tasks that compose up into a clear goal for the sprint.
 Once you're done, provide this prompt to a subagent to review your work and suggest
 improvements. When you're done reviewing the suggest improvements write your
-tasks/tickets, sprint plans, etc to a md file.
+tasks/tickets, sprint plans, etc to a tasks.md file.
