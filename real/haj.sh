@@ -1,18 +1,21 @@
 #!/bin/bash
 # haj.sh - Hotschmoe Agent Injections
-# Updates all marked sections in CLAUDE.md from single source of truth
+# Updates marked sections in CLAUDE.md or creates one if missing
 #
 # Usage:
 #   curl -sL https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real/haj.sh | bash
 #   curl -sL https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real/haj.sh | bash -s -- ./path/to/CLAUDE.md
 #
-# The script fetches the source from GitHub and updates ONLY marked sections,
-# preserving all project-specific content.
+# If CLAUDE.md doesn't exist, creates one with standard sections.
+# If it exists, updates only marked sections (preserves project-specific content).
 
 set -e
 
 SOURCE_URL="https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real/hotschmoe_agent_injections.md"
 TARGET="${1:-./CLAUDE.md}"
+
+# Default sections for new files
+DEFAULT_SECTIONS="header rule-1-no-delete irreversible-actions code-discipline no-legacy dev-philosophy testing-philosophy footer"
 
 # Colors
 RED='\033[0;31m'
@@ -24,15 +27,6 @@ NC='\033[0m'
 echo -e "${BLUE}haj.sh - Hotschmoe Agent Injections${NC}"
 echo ""
 
-# Check target exists
-if [ ! -f "$TARGET" ]; then
-    echo -e "${RED}Error: Target file not found: $TARGET${NC}"
-    echo ""
-    echo "To initialize a new CLAUDE.md, create it with section markers first."
-    echo "See: https://github.com/Hotschmoe/hotschmoe-setup/blob/master/real/how_to_inject.md"
-    exit 1
-fi
-
 # Fetch source from GitHub
 echo -e "Fetching source from GitHub..."
 SOURCE_CONTENT=$(curl -sL "$SOURCE_URL")
@@ -42,7 +36,46 @@ if [ -z "$SOURCE_CONTENT" ]; then
     exit 1
 fi
 
-# Find all sections in target file
+# If target doesn't exist, create it with default sections
+if [ ! -f "$TARGET" ]; then
+    echo -e "${YELLOW}$TARGET not found - creating with standard sections${NC}"
+    echo ""
+
+    # Create file with default sections
+    > "$TARGET"
+
+    for section in $DEFAULT_SECTIONS; do
+        # Extract section from source (with markers)
+        section_content=$(echo "$SOURCE_CONTENT" | sed -n "/<!-- BEGIN:$section -->/,/<!-- END:$section -->/p")
+
+        if [ -n "$section_content" ]; then
+            echo "$section_content" >> "$TARGET"
+            echo "" >> "$TARGET"
+            echo -e "${GREEN}Added: $section${NC}"
+        else
+            echo -e "${YELLOW}Skipped: $section (not found in source)${NC}"
+        fi
+    done
+
+    # Add placeholder for project-specific content
+    cat >> "$TARGET" << 'TEMPLATE'
+
+---
+
+## Project-Specific Content
+
+<!-- Add your project's toolchain, architecture, workflows here -->
+<!-- This section will not be touched by haj.sh -->
+
+TEMPLATE
+
+    echo ""
+    echo -e "${GREEN}Created: $TARGET${NC}"
+    echo -e "Edit the file to add project-specific content, then run again to update sections."
+    exit 0
+fi
+
+# File exists - update marked sections
 SECTIONS=$(grep -oP '(?<=<!-- BEGIN:)[^> ]+(?= -->)' "$TARGET" 2>/dev/null || true)
 
 if [ -z "$SECTIONS" ]; then

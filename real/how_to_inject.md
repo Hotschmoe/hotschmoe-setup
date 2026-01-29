@@ -1,8 +1,6 @@
 # Hotschmoe Agent Injections - Usage Guide
 
-## One-Liner Update
-
-Update all marked sections in your CLAUDE.md:
+## One-Liner
 
 ```bash
 curl -sL https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real/haj.sh | bash
@@ -16,10 +14,14 @@ curl -sL https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real
 
 ## How It Works
 
-1. Script fetches source of truth from GitHub (`hotschmoe_agent_injections.md`)
-2. Finds all `<!-- BEGIN:section-name -->` markers in your target file
-3. Updates only those sections from source
-4. Project-specific content (anything outside markers) is preserved
+**If CLAUDE.md doesn't exist:**
+- Creates one with standard sections (rule-1, code-discipline, dev-philosophy, etc.)
+- Adds a placeholder for project-specific content
+
+**If CLAUDE.md exists:**
+- Finds all `<!-- BEGIN:section-name -->` markers
+- Updates only those sections from source
+- Project-specific content (anything outside markers) is preserved
 
 ```
 Your CLAUDE.md:
@@ -39,42 +41,25 @@ Your CLAUDE.md:
 
 ## Setting Up a New Project
 
-1. Create `CLAUDE.md` with the sections you want (copy markers from examples below)
-2. Add your project-specific content outside the markers
-3. Run the one-liner anytime to sync with latest philosophies
+Just run the one-liner in your project directory:
 
-### Starter Template (copy this)
-
-```markdown
-<!-- BEGIN:header -->
-<!-- END:header -->
-
-<!-- BEGIN:rule-1-no-delete -->
-<!-- END:rule-1-no-delete -->
-
-<!-- BEGIN:irreversible-actions -->
-<!-- END:irreversible-actions -->
-
-<!-- BEGIN:code-discipline -->
-<!-- END:code-discipline -->
-
-<!-- BEGIN:dev-philosophy -->
-<!-- END:dev-philosophy -->
-
-<!-- BEGIN:testing-philosophy -->
-<!-- END:testing-philosophy -->
-
----
-
-## Project-Specific Content
-
-(Add your toolchain, architecture, workflows here - this won't be touched by haj.sh)
-
-<!-- BEGIN:footer -->
-<!-- END:footer -->
+```bash
+curl -sL https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real/haj.sh | bash
 ```
 
-Then run the one-liner to populate the sections.
+This creates CLAUDE.md with these default sections:
+- `header` - title + love message
+- `rule-1-no-delete` - absolute no-delete rule
+- `irreversible-actions` - git/filesystem safety
+- `code-discipline` - editing discipline
+- `no-legacy` - full migrations only
+- `dev-philosophy` - make it work/right/fast
+- `testing-philosophy` - tests as diagnostics
+- `footer` - closing message
+
+Plus a placeholder for project-specific content.
+
+**Then:** Edit the file to add your project's toolchain, architecture, and workflows in the project-specific section.
 
 ## Available Sections
 
@@ -94,42 +79,18 @@ Then run the one-liner to populate the sections.
 | `project-language-template` | Placeholder for language-specific content |
 | `footer` | Closing message |
 
-## Section Bundles
+## Customizing Sections
 
-**Minimal (safety only):**
+To remove a section: delete both markers and content between them, then run the one-liner (it won't re-add).
+
+To add a section: copy empty markers into your file, then run the one-liner to populate:
+
 ```markdown
-<!-- BEGIN:rule-1-no-delete -->
-<!-- END:rule-1-no-delete -->
+<!-- BEGIN:semver -->
+<!-- END:semver -->
 
-<!-- BEGIN:irreversible-actions -->
-<!-- END:irreversible-actions -->
-```
-
-**Standard (recommended):**
-```markdown
-<!-- BEGIN:header -->
-<!-- END:header -->
-
-<!-- BEGIN:rule-1-no-delete -->
-<!-- END:rule-1-no-delete -->
-
-<!-- BEGIN:irreversible-actions -->
-<!-- END:irreversible-actions -->
-
-<!-- BEGIN:code-discipline -->
-<!-- END:code-discipline -->
-
-<!-- BEGIN:no-legacy -->
-<!-- END:no-legacy -->
-
-<!-- BEGIN:dev-philosophy -->
-<!-- END:dev-philosophy -->
-
-<!-- BEGIN:testing-philosophy -->
-<!-- END:testing-philosophy -->
-
-<!-- BEGIN:footer -->
-<!-- END:footer -->
+<!-- BEGIN:claude-agents -->
+<!-- END:claude-agents -->
 ```
 
 ## Tips
