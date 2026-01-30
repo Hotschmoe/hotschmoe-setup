@@ -1,11 +1,33 @@
 @README.md @SPEC.md @FEATURE_PARITY.md @VISION.md @TESTING.md
 
-If you were to break this project down into beads, how would you do it (timeline info does not need included and doesn't matter):
+Break this project down into beads (focus on @FEATURE_PARITY.md as this project is a zig port of an existing project). Timeline info doesn't matter.
 
-- Every **bead** should be an atomic, commitable piece of work with tests (and if tests don't make sense, another form of validation that it was completed successfully)
+## Bead Definition
 
-Be exhaustive, be clear, be technical, always focus on small atomic beads that compose up into a clear goal for the project ethos.
+A **bead** is a single task or feature—an atomic, commitable piece of work with validation.
 
-create your beads using `br` (beads_rust) - one bead per atomic task
+### Key Principles
 
-Once you're done, provide this prompt to a subagent to review your work and suggest improvements. When you're done reviewing the suggested improvements update any beads as needed.
+- **One task/feature per bead** — Cohesive unit of work
+- **Self-contained details** — Each bead runs with a fresh agent context; include everything needed to complete the work
+- **Atomic & commitable** — Clean, reviewable commit
+
+### What to Include
+
+1. **Goal** — What this bead accomplishes
+2. **Technical approach** — How to implement it, key decisions
+3. **Validation** — How to verify completion (test commands, checks)
+4. **Dependencies** — Beads that must complete first (if any)
+
+> [!NOTE]
+> The agent receives `SPEC.md`, `VISION.md`, and `TESTING.md` automatically —no need to repeat that context in individual beads.
+
+Be exhaustive, be clear, be technical.
+
+## Commands
+
+Create beads using `br` (beads_rust) — one bead per atomic task.
+
+## Review
+
+Once done, have a subagent review your beads and suggest improvements.
