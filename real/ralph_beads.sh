@@ -99,6 +99,25 @@ commit_all() {
     git commit -m "$1" --no-verify 2>/dev/null || true
 }
 
+graceful_exit() {
+    echo
+    log "Interrupted - syncing beads..."
+    beads_sync
+    exit 0
+}
+
+countdown_window() {
+    local seconds="${1:-5}"
+    trap graceful_exit SIGINT
+    echo
+    for ((i=seconds; i>0; i--)); do
+        printf "\r[Ctrl+C to stop] Next task in %d... " "$i"
+        sleep 1
+    done
+    printf "\r%-40s\r" " "
+    trap - SIGINT
+}
+
 cd "$PROJECT_DIR"
 check_requirements
 
@@ -109,6 +128,9 @@ log "Project: $PROJECT_DIR"
 [[ "$AUTO_MODE" == true ]] && log "AUTO MODE ENABLED"
 
 while true; do
+    # Window for user to Ctrl+C between tasks
+    countdown_window 5
+
     task_json=$(beads_get_next)
 
     if [[ -z "$task_json" || "$task_json" == "null" ]]; then
