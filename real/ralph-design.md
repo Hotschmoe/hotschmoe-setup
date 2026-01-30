@@ -629,10 +629,150 @@ Three scripts created:
 
 ---
 
-## Next Steps
+## Current Implementation: hot_ralph (ralph_beads.sh)
 
-1. **Test on small project**: Create a minimal SPEC.md/VISION.md/testing.md and run each
-2. **Verify `--resume`**: Check if ralph_a's session persistence actually works with `--print`
-3. **Beads setup**: Install beads and verify ralph_c bootstrap creates valid issues
-4. **Error handling**: All scripts need better error recovery for Claude failures
-5. **Parallel execution**: Consider running multiple Claude instances for independent tasks
+**Status**: Production-ready, actively used.
+
+### Installation
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Hotschmoe/hotschmoe-setup/master/real/ralph_beads.sh -o ~/.local/bin/hot_ralph && chmod +x ~/.local/bin/hot_ralph
+```
+
+### Usage
+
+```bash
+# Interactive mode (default)
+hot_ralph
+
+# Auto mode - runs through all tasks without prompts
+hot_ralph --auto
+hot_ralph -a
+
+# With project directory
+hot_ralph /path/to/project --auto
+```
+
+### Features
+
+| Feature | Description |
+|---------|-------------|
+| **Beads Integration** | Uses `br` CLI for task tracking with priority, status, dependencies |
+| **Auto Mode** | `--auto` flag bypasses prompts for continuous execution |
+| **Output Logging** | Saves all Claude output to `.hot_ralph/{timestamp}_{label}.md` |
+| **Code Simplifier** | Runs simplification pass after each successful task |
+| **Countdown Window** | 5-second Ctrl+C window between tasks for graceful exit |
+| **Graceful Exit** | Ctrl+C syncs beads before exiting |
+
+### Required Project Files
+
+```
+project/
+  SPEC.md       # Project specification
+  VISION.md     # Project vision
+  TESTING.md    # Testing requirements
+  .beads/       # Beads task database (br init)
+```
+
+### Task Lifecycle
+
+```
+br ready --json
+      |
+      v
++-----+------+
+| 5s countdown |<-- Ctrl+C exits gracefully here
++-----+------+
+      |
+      v
++-----+------+
+| Show task  |
+| [Y/n/s/v/q]|
++-----+------+
+      |
+      v
++-----+------+
+| Claim task |
+| (in_progress)|
++-----+------+
+      |
+      v
++-----+------+
+| Claude     |
+| executes   |
++-----+------+
+      |
+      v
++-----+------+
+| Success?   |
+| [Y/n/r]    |
++-----+------+
+      |
+  +---+---+
+  |       |
+  v       v
+[Y]     [n/r]
+  |       |
+  v       |
++-----+   |
+|Simplify|  |
+|code    |  |
++-----+   |
+  |       |
+  v       |
++-----+   |
+|Complete|  |
+|task    |  |
++-----+   |
+  |       |
+  +---+---+
+      |
+      v
+  Next task
+```
+
+### Output Structure
+
+```
+.hot_ralph/
+  20260129_010530_task_bd_2f8_.md      # Task execution output
+  20260129_010545_simplify_bd_2f8_.md  # Simplification output
+  20260129_012000_final_review.md      # Final review when all done
+```
+
+### Key Functions
+
+| Function | Purpose |
+|----------|---------|
+| `run_claude` | Execute Claude with streaming JSON, save output |
+| `prompt_user` | Interactive prompt (bypassed in auto mode) |
+| `countdown_window` | 5-second interruptible pause between tasks |
+| `graceful_exit` | Sync beads and exit on Ctrl+C |
+| `beads_*` | Beads CLI wrappers (ready_count, get_next, claim, complete, sync) |
+| `commit_beads` | Sync and commit .beads/ changes |
+| `commit_all` | Stage and commit all changes |
+
+---
+
+## Design History
+
+### Option A: Session Persistence (not implemented)
+- Used `--resume` for cross-phase context
+- Rejected: session management complexity, potential expiration issues
+
+### Option B: Task Manifest (not implemented)
+- Used `tasks.md` with checkboxes
+- Rejected: grep/awk parsing fragile, no priority/dependency support
+
+### Option C: Beads Integration (implemented as hot_ralph)
+- Uses beads (`br`) for structured task tracking
+- Chosen: robust querying, native priorities, git-friendly `.beads/` directory
+
+---
+
+## Future Considerations
+
+1. **Parallel execution**: Run multiple Claude instances for independent tasks
+2. **Re-planning checkpoints**: Periodic task list review after sprint completion
+3. **Error recovery**: Better handling of Claude failures mid-task
+4. **Session persistence hybrid**: Add `--resume` for multi-turn tasks if needed
