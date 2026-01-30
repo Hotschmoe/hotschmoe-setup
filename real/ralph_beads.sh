@@ -56,6 +56,7 @@ run_claude() {
     local prompt="$1"
     claude \
         --print \
+        --verbose \
         --output-format stream-json \
         --dangerously-skip-permissions \
         "$prompt" \
