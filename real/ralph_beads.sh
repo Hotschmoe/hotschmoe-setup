@@ -101,16 +101,16 @@ beads_create_task() {
     local priority="${3:-2}"
     local sprint="${4:-}"
 
-    local sprint_flag=""
+    local label_flag=""
     if [[ -n "$sprint" ]]; then
-        sprint_flag="--tags sprint:$sprint"
+        label_flag="--labels sprint:$sprint"
     fi
 
     br create "$title" \
         --type task \
         --priority "$priority" \
         --description "$description" \
-        $sprint_flag \
+        $label_flag \
         --json 2>/dev/null | jq -r '.id // empty'
 }
 
